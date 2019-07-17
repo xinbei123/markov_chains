@@ -11,9 +11,14 @@ def open_and_read_file(file_path):
     """
 
     # your code goes here
+    # gettysburg_file = open(file_path)
+    # gettysburg_file = gettysburg_file.read()
 
-    return "Contents of your file as one long string"
+    # return gettysburg_file
 
+    return open(file_path).read()
+
+# print(open_and_read_file("gettysburg.txt"))
 
 def make_chains(text_string):
     """Take input text as string; return dictionary of Markov chains.
@@ -43,21 +48,64 @@ def make_chains(text_string):
     chains = {}
 
     # your code goes here
+    text_list = text_string.split()
+
+    pair_list = []
+
+   
+    for idx, word in enumerate(text_list):
+
+        if idx == len(text_list)-3:
+            break
+        else:
+            word_1 = text_list [idx]
+            word_2 = text_list [idx + 1]
+
+            pair_list.append((word_1,word_2))
+            # print("pair list ->" ,pair_list)
+
+            if (word_1, word_2) in set(pair_list):
+                if chains.get((word_1,word_2)) == None:
+                    chains[(word_1,word_2)] = []
+
+                chains[(word_1,word_2)].append(text_list [idx + 2])
+
+    # for keys,value in chains.items():
+    #     print(keys)
+    #     print(value)
+
 
     return chains
 
+# make_chains(open('green_eggs.txt').read())
+# # print(make_chains(open('gettysburg.txt').read()))
 
 def make_text(chains):
     """Return text from chains."""
 
     words = []
 
-    # your code goes here
+
+    # get key words by iterating through keys using key method
+    key_words = [pairs for pairs in chains.keys()] 
+
+    # randomly chooses starting point from key_words list
+
+    for item in chains:
+
+        starting_point = choice(key_words) 
+        value = chains[starting_point]
+
+        next_word = choice(value)
+        words = [starting_point[0], starting_point[1], next_word]
+
+
+
 
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
+input_path = "green_eggs.txt"
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
