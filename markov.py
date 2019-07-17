@@ -70,9 +70,9 @@ def make_chains(text_string):
 
                 chains[(word_1,word_2)].append(text_list [idx + 2])
 
-    # for keys,value in chains.items():
-    #     print(keys)
-    #     print(value)
+    for keys,value in chains.items():
+        print(keys)
+        print(value)
 
 
     return chains
@@ -90,19 +90,36 @@ def make_text(chains):
     key_words = [pairs for pairs in chains.keys()] 
 
     # randomly chooses starting point from key_words list
+    starting_point = choice(key_words)
 
-    for item in chains:
+    word_1, word_2 = starting_point
 
-        starting_point = choice(key_words) 
-        value = chains[starting_point]
+    while True:
 
-        next_word = choice(value)
-        words = [starting_point[0], starting_point[1], next_word]
+        if words == []:
 
+            value = chains[starting_point]
 
+            next_word = choice(value)
 
+            words.append(word_1)
+            words.append(word_2)
+            words.append(next_word)
+
+        elif words != []:
+            word_1, word_2 = words[-2:]
+
+            if (word_1, word_2) not in chains:
+                break
+
+            else:
+                next_word = choice(chains[(word_1, word_2)]) 
+                
+                words.append(next_word)
 
     return " ".join(words)
+
+    # return " ".join(words)
 
 
 input_path = "green_eggs.txt"
